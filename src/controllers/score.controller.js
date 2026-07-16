@@ -1,19 +1,26 @@
-const Score = require("../models/score.model");
+const scoreService = require("../services/score.service");
 
-const getScoreBySbd = (req, res) => {
+const getScoreBySbd = async(req, res) => {
     const sbd = req.params.sbd;
-    console.log(sbd)
     try {
+        const score = await scoreService.getScoreBySbd(sbd);
+
+        if (!score) {
+            return res.status(404).json({
+                success: false,
+                message: "Không tìm thấy số báo danh",
+            });
+        }
         res.status(200).json({
             success: true,
-            sbd: sbd
+            score: score
         })
     } catch (err) {
         res.status(500).json({
             success: false,
-            message: error.message,
+            message: err.message,
         });
     }
 }
 
-module.exports = {getScoreBySbd}
+module.exports = { getScoreBySbd }
