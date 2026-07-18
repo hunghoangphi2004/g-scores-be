@@ -5,7 +5,6 @@ const getSubjectStatistics = async(req, res) => {
         const subject = req.params.subject;
         const result = await statisticService.getSubjectStatistics(subject);
 
-        console.log(result)
 
         res.status(200).json({
             success: true,

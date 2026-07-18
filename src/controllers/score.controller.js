@@ -1,17 +1,17 @@
 const scoreService = require("../services/score.service");
 
-const getScoreBySbd = async(req, res) => {
+const getScoreBySbd = async (req, res) => {
     const sbd = req.params.sbd;
     try {
         const score = await scoreService.getScoreBySbd(sbd);
 
         if (!score) {
-            return res.status(404).json({
+            return res.status(200).json({
                 success: false,
-                message: "Không tìm thấy số báo danh",
-            });
+                message: "Không tìm thấy sbd"
+            })
         }
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             score: score
         })
