@@ -123,31 +123,69 @@ const getSubjectStatistics = async (subject) => {
     // }
 };
 
-const getTop10GroupA = async() => {
-    const students = await Score.find(
+//out of memory
+// const getTop10GroupA = async() => {
+//     const students = await Score.find(
+//         {
+//             toan: { $ne: null },
+//             vat_li: { $ne: null },
+//             hoa_hoc: { $ne: null }
+//         },
+//         {
+//             _id: 0,
+//             sbd: 1,
+//             toan: 1,
+//             vat_li: 1,
+//             hoa_hoc: 1
+//         }
+//     ).lean();
+
+//     const result = students
+//         .map(student => ({
+//             ...student,
+//             total: student.toan + student.vat_li + student.hoa_hoc
+//         }))
+//         .sort((a, b) => b.total - a.total)
+//         .slice(0, 10);
+
+//     return result;
+// }
+
+const getTop10GroupA = async () => {
+    return await Score.aggregate([
         {
-            toan: { $ne: null },
-            vat_li: { $ne: null },
-            hoa_hoc: { $ne: null }
+            $match: {
+                toan: { $ne: null },
+                vat_li: { $ne: null },
+                hoa_hoc: { $ne: null }
+            }
         },
         {
-            _id: 0,
-            sbd: 1,
-            toan: 1,
-            vat_li: 1,
-            hoa_hoc: 1
+            $addFields: {
+                total: {
+                    $add: ["$toan", "$vat_li", "$hoa_hoc"]
+                }
+            }
+        },
+        {
+            $sort: {
+                total: -1
+            }
+        },
+        {
+            $limit: 10
+        },
+        {
+            $project: {
+                _id: 0,
+                sbd: 1,
+                toan: 1,
+                vat_li: 1,
+                hoa_hoc: 1,
+                total: 1
+            }
         }
-    ).lean();
-
-    const result = students
-        .map(student => ({
-            ...student,
-            total: student.toan + student.vat_li + student.hoa_hoc
-        }))
-        .sort((a, b) => b.total - a.total)
-        .slice(0, 10);
-
-    return result;
-}
+    ]);
+};
 
 module.exports = { getSubjectStatistics, getTop10GroupA };
