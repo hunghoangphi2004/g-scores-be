@@ -9,6 +9,11 @@ Backend của **G-Scores** được xây dựng bằng **Node.js**, **Express.js
 * Lấy Top 10 thí sinh khối A.
 * Import dữ liệu từ file CSV vào MongoDB.
 
+## Demo
+
+- Backend API: https://g-scores-be-1l4i.onrender.com/
+- Ví dụ: https://g-scores-be-1l4i.onrender.com/api/scores/01000001
+
 ## Công nghệ sử dụng
 
 * Node.js
@@ -94,6 +99,3 @@ http://localhost:3000
 | GET         | `/api/statistics/:subject`           | Thống kê điểm theo môn |
 | GET         | `/api/statistics/get-top-10-group-A` | Top 10 thí sinh khối A |
 
-## Demo
-
-* **Backend:** Thêm đường dẫn sau khi triển khai (Render/Railway).
